@@ -9,6 +9,6 @@ public class MyFinanceDBContext : DbContext
     public DbSet<Transacao> Transacao {get; set;}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Database=myfinance;Username=postgres;Password=yourpassword");
+        optionsBuilder.UseNpgsql("Host=localhost:5432;Database=myfinance;Username=myfinanceadm;Password=123456");
     }
 }

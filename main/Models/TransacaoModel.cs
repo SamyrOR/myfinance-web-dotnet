@@ -1,4 +1,5 @@
 using domain.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace myfinance_web_dotnet.Models
 {
@@ -10,6 +11,6 @@ namespace myfinance_web_dotnet.Models
         public decimal Valor {get; set;}
         public int PlanoContaID {get; set;}
         public string? Tipo{get; set;}
-        public PlanoConta PlanoConta {get; set;}
+        public IEnumerable<SelectListItem>? ListaPlanoContas {get; set;}
     }
 }

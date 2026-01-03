@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using myfinance_web_dotnet.Models;
 using service.Interfaces;
 using domain.Entities;
@@ -11,13 +12,16 @@ namespace myfinance_web_dotnet.Controllers
     {
         private readonly ILogger<TransacaoController> _logger;
         private readonly ITransacaoService _transacaoService;
+        private readonly IPlanoContaService _planoContaService;
         public TransacaoController(
             ILogger<TransacaoController> logger,
-            ITransacaoService transacaoService
+            ITransacaoService transacaoService,
+            IPlanoContaService planoContaService
         )
         {
             _logger = logger;
             _transacaoService = transacaoService;
+            _planoContaService = planoContaService;
 
         }
         public IActionResult Index()
@@ -42,25 +46,27 @@ namespace myfinance_web_dotnet.Controllers
         }
         public IActionResult Cadastrar(int? ID)
         {
+            var listaPlanoContas = new SelectList(_planoContaService.ListarRegistros(), "ID", "Descricao");
+
+            var transacaoModel = new TransacaoModel(){
+                Data = DateTime.Now,
+                ListaPlanoContas = listaPlanoContas
+            };
             if (ID != null)
             {
                 var transacao = _transacaoService.RetornarRegistro((int)ID);
-                var transacaoModel = new TransacaoModel()
-                {
-                    ID = transacao.ID,
-                    Historico = transacao.Historico,
-                    Data = transacao.Data,
-                    Valor = transacao.Valor,
-                    Tipo = transacao.PlanoConta.Tipo,
-                    PlanoContaID = transacao.PlanoContaID,
-                };
-                return View(transacaoModel);   
+                transacaoModel.ID = transacao.ID;
+                transacaoModel.Historico = transacao.Historico;
+                transacaoModel.Data = transacao.Data;
+                transacaoModel.Valor = transacao.Valor;
+                transacaoModel.Tipo = transacao.PlanoConta.Tipo;
+                transacaoModel.PlanoContaID = transacao.PlanoContaID;
             }
-            return View();
+
+            return View(transacaoModel);
             
         }
         [HttpPost]
-        [Route("Cadastrar")]
         public IActionResult Cadastrar(TransacaoModel model)
         {
             var transacao = new Transacao()

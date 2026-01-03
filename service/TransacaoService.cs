@@ -27,7 +27,7 @@ namespace service
             }
             _dbContext.SaveChanges();
         }
-                public void Excluir(int ID)
+        public void Excluir(int ID)
         {
             var Transacao = new Transacao() {ID = ID};
             _dbContext.Attach(Transacao);
@@ -38,11 +38,11 @@ namespace service
                 public List<Transacao> ListarRegistros()
         {
             var dbSet = _dbContext.Transacao;
-            return dbSet.ToList();
+            return dbSet.Include(x => x.PlanoConta).ToList();
         }
                 public Transacao RetornarRegistro(int ID)
         {
-            return _dbContext.Transacao.Where(transacao => transacao.ID == ID).First();
+            return _dbContext.Transacao.Include(x => x.PlanoConta).Where(transacao => transacao.ID == ID).First();
         }
     }
 }
