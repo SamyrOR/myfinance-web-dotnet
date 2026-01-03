@@ -66,7 +66,11 @@ namespace myfinance_web_dotnet.Controllers
             _planoContaService.Cadastrar(planoConta);
             return RedirectToAction("Index");
         }
-
+        public IActionResult Excluir(int ID)
+        {
+            _planoContaService.Excluir(ID);
+            return RedirectToAction("Index");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
