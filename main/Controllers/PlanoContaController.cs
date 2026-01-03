@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using myfinance_web_dotnet.Models;
 using service.Interfaces;
+using domain.Entities;
 
 
 namespace myfinance_web_dotnet.Controllers
@@ -36,7 +37,24 @@ namespace myfinance_web_dotnet.Controllers
             ViewBag.ListaPlanoConta = listaPlanoContaModel;
             return View();
         }
-        
+        public IActionResult Cadastrar()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("Cadastrar")]
+        public IActionResult Cadastrar(PlanoContaModel model)
+        {
+            var planoConta = new PlanoConta()
+            {
+                ID = model.ID,
+                Descricao = model.Descricao,
+                Tipo = model.Tipo,
+            };
+            _planoContaService.Cadastrar(planoConta);
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
