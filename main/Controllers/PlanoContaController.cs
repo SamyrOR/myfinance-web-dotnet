@@ -37,9 +37,21 @@ namespace myfinance_web_dotnet.Controllers
             ViewBag.ListaPlanoConta = listaPlanoContaModel;
             return View();
         }
-        public IActionResult Cadastrar()
+        public IActionResult Cadastrar(int? ID)
         {
+            if (ID != null)
+            {
+                var planoConta = _planoContaService.RetornarRegistro((int)ID);
+                var planoContaModel = new PlanoContaModel()
+                {
+                    ID = planoConta.ID,
+                    Descricao = planoConta.Descricao,
+                    Tipo = planoConta.Tipo
+                };
+                return View(planoContaModel);   
+            }
             return View();
+            
         }
         [HttpPost]
         [Route("Cadastrar")]
